@@ -40,5 +40,6 @@ class Board:
 
         if abs(direction) == 1 and int(location[0] / 10) != int(location[-1] / 10):
             return False
+			
 
         return True
