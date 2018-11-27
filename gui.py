@@ -82,8 +82,9 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame("PageOne"))
         button1.place(x=235, y = 430)
 
-
-
+    #cobain deh
+    def get_text(self):
+        print (self.entry_1.get())
 
 
 class PageOne(tk.Frame):
