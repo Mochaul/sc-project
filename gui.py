@@ -49,39 +49,40 @@ class StartPage(tk.Frame):
         label_1 = tk.Label(self, text="kapal jumbo", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
 
-        entry_1 =tk.Entry(self)
-        entry_1.place(x=240, y=130)
+        self.entry_1 =tk.Entry(self)
+        self.entry_1.place(x=240, y=130)
+
 
         label_2 = tk.Label(self, text="Kapal besar 1", width=20, font=("bold", 10))
         label_2.place(x=68, y=180)
 
         entry_2 = tk.Entry(self)
         entry_2.place(x=240, y=180)
+        position2 = entry_2.get()
 
         label_3 = tk.Label(self, text="Kapal besar 2", width=20, font=("bold", 10))
         label_3.place(x=70, y=230)
-
         entry_3 = tk.Entry(self)
         entry_3.place(x=235, y=230)
+        position3 = entry_3.get()
 
         label_4 = tk.Label(self, text="Kapal sedang 1", width=20, font=("bold", 10))
         label_4.place(x=70, y=280)
-
         entry_4 = tk.Entry(self)
         entry_4.place(x=240, y=280)
+        position4 = entry_4.get()
 
-        label_5 = tk.Label(self, text="Kapal sedang 2", width=20, font=("bold", 10))
-        label_5.place(x=85, y=330)
-        entry_5 = tk.Entry(self)
-        entry_5.place(x=235, y=330)
 
         label_6 = tk.Label(self, text="Kapal kecil", width=20, font=("bold", 10))
         label_6.place(x=85, y=380)
         entry_6 = tk.Entry(self)
         entry_6.place(x=235, y=380)
+        position5 = entry_6.get()
         button1 = tk.Button(self, text="Lanjut",
                             command=lambda: controller.show_frame("PageOne"))
         button1.place(x=235, y = 430)
+
+
 
 
 
