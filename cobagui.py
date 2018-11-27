@@ -1,7 +1,7 @@
 import tkinter as tk                # python 3
 from tkinter import font  as tkfont # python 3
 
-class gui(tk.Tk):
+class SampleApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -123,6 +123,5 @@ class PageOne(tk.Frame):
 
 
 if __name__ == "__main__":
-    app = gui()
+    app = SampleApp()
     app.mainloop()
-
