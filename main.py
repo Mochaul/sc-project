@@ -16,7 +16,6 @@ def main():
 
     # Available ships for the game
     # ships = [["Carrier", 5, 1], ["Battleships", 4, 2], ["Cruisers", 3, 2], ["Submarines", 2, 1]]
-    =
 
     #functions()
 

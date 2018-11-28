@@ -1,29 +1,19 @@
-class ships:
-    def __init__(self, category, size, position):
-        self.category = category
+class Ships:
+    def __init__(self, name, size):
+        self.name = name
         self.size = size
-        self.position = position
     
-    def isShot(self, coordinates):
-        for i in self.position:
-            if coordinates == i:
-                #guess correctly
-                i = "x"
-                self.isDestroyed()
-                return True
+    def shot_by_enemy(self):
+        self.size -= 1
+        self.is_destroyed()
+
+    def is_destroyed(self):
+        if self.size == 0:
+            return True
         return False
 
-    def isDestroyed(self):
-        for i in self.position:
-            if i != "x":
-                return False
-        return True
-
-    def getCategory(self):
-        return self.category
+    def get_category(self):
+        return self.name
     
-    def getSize(self):
+    def get_size(self):
         return self.size
-
-    def getPosition(self):
-        return self.position
