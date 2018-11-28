@@ -3,4 +3,4 @@ class Player():
         self.enemy = enemy
 
     def setup(self, board):
-        
+        return True

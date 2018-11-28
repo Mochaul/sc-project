@@ -1,6 +1,9 @@
-import ships
+import gui, board, ships, player, ai
 
 def main():
+    app = gui.GUI()
+    print ("test")
+
     global SHIP, HIT, MISS, EMPTY
     global TOP, SIDE
     global ships
@@ -19,10 +22,14 @@ def main():
 
     #functions()
 
-    def fullgame():
-        global user_board, comp_board
-        global user, comp
+#     def fullgame():
+#         global user_board, comp_board
+#         global user, comp
         
-        # Set the board
-        user_board = Board(100)
-        comp_board = Board(100)
+#         # Set the board
+#         user_board = Board(100)
+#         comp_board = Board(100)
+
+    app.mainloop()
+
+main()
