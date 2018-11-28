@@ -1,13 +1,16 @@
 import tkinter as tk                # python 3
 from tkinter import font  as tkfont # python 3
 
+TOP = "ABCDEFGHIJ"
+SIDE = "0123456789"
+
 class gui(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-        self.geometry("400x800")
+        self.geometry("1000x800")
 
         # the container is where we'll stack a bunch of frames
         # on top of each other, then the one we want visible
@@ -41,24 +44,24 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        self.board = 100 * [" "]
+
         label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN !", font=("bold", 15))
         label_11 = tk.Label(self, text="Format penulisan X sampai X (misal A4 sampai A9)", font=("bold", 10))
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
-
-        label_1 = tk.Label(self, text="kapal jumbo", width=20, font=("bold", 10))
+        self.board = 100 * [" "]
+        label_1 = tk.Label(self, text="martadinata (5)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_2 = tk.Label(self, text="Kapal besar 1", width=20, font=("bold", 10))
+        label_2 = tk.Label(self, text="Kapal fatahilah (4)", width=20, font=("bold", 10))
         label_2.place(x=68, y=180)
-        label_3 = tk.Label(self, text="Kapal besar 2", width=20, font=("bold", 10))
+        label_3 = tk.Label(self, text="Kapal cakra (3)", width=20, font=("bold", 10))
         label_3.place(x=70, y=230)
-        label_4 = tk.Label(self, text="Kapal sedang 1", width=20, font=("bold", 10))
+        label_4 = tk.Label(self, text="Kapal boa (3)", width=20, font=("bold", 10))
         label_4.place(x=70, y=280)
-        label_5 = tk.Label(self, text="Kapal kecil", width=20, font=("bold", 10))
+        label_5 = tk.Label(self, text="Kapal andau (2)", width=20, font=("bold", 10))
         label_5.place(x=85, y=330)
         label6 = tk.Label(self, text=self.render())
-        label6.place(x = 130, y = 480)
+        label6.place(x = 80, y = 430)
 
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
@@ -72,8 +75,8 @@ class StartPage(tk.Frame):
         self.entry_5.place(x=240, y=330)
         self.button = tk.Button(self, text="check", command=self.on_button)
         self.button2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
-        self.button.place(x=130, y = 430)
-        self.button2.place(x= 240, y = 430)
+        self.button.place(x=130, y = 380)
+        self.button2.place(x= 240, y = 380)
 
 
 
@@ -83,17 +86,28 @@ class StartPage(tk.Frame):
         pos_3 = self.entry_3.get()
         pos_4 = self.entry_4.get()
         pos_5 = self.entry_5.get()
-        arrship1 = ["ship1",5,pos_1]
-        arrship2 = ["ship2",4,pos_2]
-        arrship3 = ["ship3", 4, pos_3]
-        arrship4 = ["ship4", 3, pos_4]
-        arrship5 = ["ship5", 2, pos_5]
-        arrall = [arrship1,arrship2,arrship3,arrship4,arrship5]
-        return arrall
+        self.entry_1.delete(0, 'end')
+        self.entry_2.delete(0, 'end')
+        self.entry_3.delete(0, 'end')
+        self.entry_4.delete(0, 'end')
+        self.entry_5.delete(0, 'end')
+        if (pos_1[0] in TOP and pos_2[0] in TOP and pos_3[0] in TOP and pos_4[0] in TOP and pos_5[0] in TOP
+                and pos_1[-2] in TOP and pos_2[-2] in TOP and pos_3[-2] in TOP and pos_4[-2] in TOP and pos_5[-2] in TOP and
+                pos_1[1] in SIDE and pos_2[1] in SIDE and pos_3[1] in SIDE and pos_4[1] in SIDE and pos_5[1] in SIDE
+                and pos_1[-1] in SIDE and pos_2[-1] in SIDE and pos_3[-1] in SIDE and pos_4[-1] in SIDE and pos_5[
+                    -1] in SIDE):
+            print ("true")
+            arrship1 = ["martadinata", 5, pos_1]
+            arrship2 = ["fatahilah", 4, pos_2]
+            arrship3 = ["cakra", 3, pos_3]
+            arrship4 = ["boa", 3, pos_4]
+            arrship5 = ["andau", 2, pos_5]
+            arrall = [arrship1,arrship2,arrship3,arrship4,arrship5]
+            return arrall
+
 
     def render(self):
-        TOP = "ABCDEFGHIJ"
-        SIDE = "0123456789"
+
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
@@ -101,6 +115,7 @@ class StartPage(tk.Frame):
             for col in range(10):
                 output += "    | %s " % self.board[row * 10 + col]
         output += "\n" + (55 * "-")
+        return output
 
 
 class PageOne(tk.Frame):
@@ -129,8 +144,6 @@ class PageOne(tk.Frame):
         label14.pack()
 
     def render(self):
-        TOP = "ABCDEFGHIJ"
-        SIDE = "0123456789"
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
@@ -138,11 +151,10 @@ class PageOne(tk.Frame):
             for col in range(10):
                 output += "    | %s " % self.board[row * 10 + col]
         output += "\n" + (55 * "-")
+        return output
 
 
     def on_button(self):
-        TOP = "ABCDEFGHIJ"
-        SIDE = "0123456789"
         pos = self.entry8.get()
         if (len(pos)!=2):
             print ("input tidak valid masukan input yang valid")
