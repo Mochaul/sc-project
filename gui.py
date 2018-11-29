@@ -3,6 +3,7 @@ from tkinter import font  as tkfont # python3
 
 TOP = "ABCDEFGHIJ"
 SIDE = "0123456789"
+arr_of_ships = []
 
 class GUI(tk.Tk):
 
@@ -82,8 +83,6 @@ class StartPage(tk.Frame):
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
 
-
-
     def on_button(self):
         pos_1 = self.entry_1.get()
         pos_2 = self.entry_2.get()
@@ -106,8 +105,7 @@ class StartPage(tk.Frame):
             arr_ship_3 = ["Kapal Cakra", 3, pos_3]
             arr_ship_4 = ["Kapal Boa", 3, pos_4]
             arr_ship_5 = ["Kapal Andau", 2, pos_5]
-            arr_all = [arr_ship_1,arr_ship_2,arr_ship_3,arr_ship_4,arr_ship_5, option]
-            return arr_all
+            arr_of_ships = [arr_ship_1,arr_ship_2,arr_ship_3,arr_ship_4,arr_ship_5, option]
 
     def render(self):
         output = "      |  "
@@ -170,3 +168,7 @@ class PageOne(tk.Frame):
                     return pos
         print(self.entry_8.get())
         self.entry_8.delete(0, 'end')
+
+# if __name__ == "__main__": 
+#     app = GUI() 
+#     app.mainloop()

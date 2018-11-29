@@ -1,10 +1,11 @@
 from board import *
 from player import *
 from ai import *
+from gui import *
 
 def main():
-    #app = gui.GUI()
-    #app.mainloop()
+    app = gui.GUI()
+
     global SHIP, HIT, MISS, EMPTY
     global TOP, SIDE
     global ships
@@ -59,6 +60,8 @@ def main():
             input()
 
     fullgame()
+
+    app.mainloop()
 
 def functions():
     global gridconvert, inv_gridconvert, gen_poslist, onboard, \
