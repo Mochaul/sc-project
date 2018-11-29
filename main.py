@@ -1,4 +1,4 @@
-import gui, board, ships, player, ai
+import gui
 
 def main():
     app = gui.GUI()
