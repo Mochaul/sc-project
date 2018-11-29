@@ -15,10 +15,10 @@ class AI:
                 allocated = False
                 while not allocated:
                     location = [randint(0, 99), 0]
-                    direction = choice(getdirs(location[0]))
+                    direction = choice(main.getdirs(location[0]))
                     location[1] = location[0] + direction
 
-                    location = gen_poslist(location, length)
+                    location = main.gen_poslist(location, length)
 
                     if not board.legal_ship(location):
                         continue
@@ -37,35 +37,37 @@ class AI:
                 print("\nComputer missed %s" % main.inv_gridconvert(result[1]))
 
     def hunt(self):
+        import main
         target = self.picktile()
 
         for i in range(self.difficulty):
-            if self.enemy.board[target] == SHIP:
+            if self.enemy.board[target] == main.SHIP:
                 break
             else:
                 target = self.picktile()
 
-        if self.enemy.board[target] == SHIP:
+        if self.enemy.board[target] == main.SHIP:
             self.mode = "ACQUIRE"
             self.acqlist = [target]
 
-            for direction in getdirs(target):
-                if self.enemy.board[target + direction] not in (MISS, HIT):
+            for direction in main.getdirs(target):
+                if self.enemy.board[target + direction] not in (main.MISS, main.HIT):
                     self.acqlist += [direction]
 
         return self.enemy.fire(target), target
 
     def acquire(self):
+        import main
         target = self.acqlist[0] + self.acqlist[1]
 
         for i in range(self.difficulty):
-            if self.enemy.board[target] == SHIP:
+            if self.enemy.board[target] == main.SHIP:
                 break
             else:
                 self.acqlist.pop(1)
                 target = self.acqlist[0] + self.acqlist[1]
 
-        if self.enemy.board[target] == SHIP:
+        if self.enemy.board[target] == main.SHIP:
             result = self.enemy.fire(target)
             self.destlist = self.findship(self.acqlist[0], self.acqlist[1])
             self.mode = "DESTROY"
@@ -86,23 +88,24 @@ class AI:
         return self.enemy.fire(target), target
 
     def findship(self, pos, direction):
+        import main
         poslist = []
 
         for i in range(2):
             ignore, progpos = False, pos
             while not ignore:
-                if check_diagonal([progpos, progpos + direction]) or \
+                if main.check_diagonal([progpos, progpos + direction]) or \
                    progpos + direction < 0:
                     ignore = True
                     continue
                 
                 progpos += direction
-                if self.enemy.board[progpos] == HIT:
+                if self.enemy.board[progpos] == main.HIT:
                     pass
-                elif self.enemy.board[progpos] == EMPTY:
+                elif self.enemy.board[progpos] == main.EMPTY:
                     poslist += [progpos]
                     ignore = True
-                elif self.enemy.board[progpos] == MISS:
+                elif self.enemy.board[progpos] == main.MISS:
                     ignore = True
                 else:
                     poslist += [progpos]
@@ -110,7 +113,8 @@ class AI:
         return poslist
 
     def picktile(self):
-        target = grid_picktile()
-        while self.enemy.board[target] in (MISS, HIT):
-            target = grid_picktile()
+        import main
+        target = main.grid_picktile()
+        while self.enemy.board[target] in (main.MISS, main.HIT):
+            target = main.grid_picktile()
         return target

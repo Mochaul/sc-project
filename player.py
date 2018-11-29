@@ -41,7 +41,7 @@ class Player():
     def turn(self): #Fix redundant firing
         import main
         print("Here is the enemy's board:")
-        print(self.enemy.render().replace(SHIP, EMPTY))
+        print(self.enemy.render().replace(main.SHIP, main.EMPTY))
         valid = False
         while not valid:
             target = input("Enter position to fire at: ").upper()
@@ -49,12 +49,12 @@ class Player():
             except:
                 print("Invalid coordinates")
                 continue
-            if self.enemy.board[target] in (MISS, HIT):
+            if self.enemy.board[target] in (main.MISS, main.HIT):
                 print("You have already fired at that tile")
                 continue
             valid = True
 
-        if self.enemy.board[target] == SHIP:
+        if self.enemy.board[target] == main.SHIP:
             print("You hit %s" % target)
         else:
             print("You missed %s" % target)
