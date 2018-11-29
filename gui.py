@@ -1,5 +1,5 @@
-import tkinter as tk                # python 3
-from tkinter import font  as tkfont # python 3
+import tkinter as tk                # python3
+from tkinter import font  as tkfont # python3
 import board, ships, player, ai
 
 TOP = "ABCDEFGHIJ"
