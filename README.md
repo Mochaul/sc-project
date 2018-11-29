@@ -1,7 +1,14 @@
-Tugas Sistem Cerdas
+# Tenggelamkan!: Sebuah Proyek Sistem Cerdas
 
-permainan tenggelamkan, teradapat beberapa class :
-1. board
-2. player
-3. AI
-4. main
+Tenggelamkan adalah permainan blabla
+
+## Starting the game
+
+Run main.py and have fun!:)
+
+## Author
+
+**Tim Anak Intelligent**
+Mochamad Aulia Akbar Praditomo
+Fajrin Maulana Kingwijati
+Tirta Hema
