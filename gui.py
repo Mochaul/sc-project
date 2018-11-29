@@ -46,7 +46,7 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN !", font=("bold", 15))
+        label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
         label_11 = tk.Label(self, text="Format penulisan X sampai X (misal A4 sampai A9)", font=("bold", 10))
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
@@ -137,7 +137,7 @@ class PageOne(tk.Frame):
         self.board = 100 * [" "]
         label2 = tk.Label(left, text="Anda")
         self.text_tembak = tk.StringVar(self)
-        button1 = tk.Button(left, text="Get", command=self.on_button)
+        button1 = tk.Button(left, text="Tenggelamkan!", command=self.on_button)
         self.entry8 = tk.Entry(left, textvariable = self.text_tembak)
         label15 = tk.Label(left, text= self.render())
         label3 = tk.Label(right, text="Lawan")
