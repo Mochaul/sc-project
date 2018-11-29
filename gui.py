@@ -53,7 +53,7 @@ class StartPage(tk.Frame):
         self.board = 100 * [" "]
         label_1 = tk.Label(self, text="Kapal Martadinata (5)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_2 = tk.Label(self, text="Kapal Fatahilah (4)", width=20, font=("bold", 10))
+        label_2 = tk.Label(self, text="Kapal Fatahillah (4)", width=20, font=("bold", 10))
         label_2.place(x=68, y=180)
         label_3 = tk.Label(self, text="Kapal Cakra (3)", width=20, font=("bold", 10))
         label_3.place(x=70, y=230)
@@ -98,13 +98,21 @@ class StartPage(tk.Frame):
                 and pos_1[-1] in SIDE and pos_2[-1] in SIDE and pos_3[-1] in SIDE and pos_4[-1] in SIDE and pos_5[
                     -1] in SIDE):
             print ("true")
-            arrship1 = ["martadinata", 5, pos_1]
-            arrship2 = ["fatahilah", 4, pos_2]
-            arrship3 = ["cakra", 3, pos_3]
-            arrship4 = ["boa", 3, pos_4]
-            arrship5 = ["andau", 2, pos_5]
+            arrship1 = ["Kapal Martadinata", 5, pos_1]
+            arrship2 = ["Kapal Fatahillah", 4, pos_2]
+            arrship3 = ["Kapal Cakra", 3, pos_3]
+            arrship4 = ["Kapal Boa", 3, pos_4]
+            arrship5 = ["Kapal Andau", 2, pos_5]
             arrall = [arrship1,arrship2,arrship3,arrship4,arrship5]
             return arrall
+    
+    def fullgame():
+        global user_board, comp_board
+        global user, comp
+        
+        # Set the board
+        user_board = Board(100)
+        comp_board = Board(100)
 
 
     def render(self):
