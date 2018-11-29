@@ -1,3 +1,4 @@
+import gui, board, player
 class AI:
     def __init__(self, difficulty, enemy):
         self.difficulty = difficulty

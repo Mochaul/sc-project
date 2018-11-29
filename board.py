@@ -1,16 +1,4 @@
-global SHIP, HIT, MISS, EMPTY
-global TOP, SIDE
-global ships
-
-# Set the ship for the terminal interface
-SHIP = "S"
-HIT = "X"
-MISS = "O"
-EMPTY = " "
-
-TOP = "ABCDEFGHIJ"
-SIDE = "0123456789"
-
+import gui, player, ai
 class Board:
     def __init__(self, size):
         self.board = size * [EMPTY]
@@ -32,15 +20,15 @@ class Board:
         for pos in location:
             self.board[pos] = SHIP
 
-    # def render(self):
-    #     output = "  | "
-    #     output += " | ".join(i for i in TOP)
-    #     for row in range(10):
-    #         output += "\n" + (41 * "-") + "\n" + SIDE[row] + " "
-    #         for col in range(10):
-    #             output += "| %s " % self.board[row * 10 + col]
-    #     output += "\n" + (41 * "-")
-    #     return output
+    def render(self):
+        output = "  | "
+        output += " | ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (41 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                output += "| %s " % self.board[row * 10 + col]
+        output += "\n" + (41 * "-")
+        return output
 
     def legal_ship(self, location):
         "Checks [0, 1] coordinates for map and ship intersection"
@@ -53,6 +41,5 @@ class Board:
 
         if abs(direction) == 1 and int(location[0] / 10) != int(location[-1] / 10):
             return False
-			
 
         return True
