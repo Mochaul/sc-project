@@ -11,7 +11,7 @@ class GUI(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-        self.title("Tenggelamkan The Game")
+        self.title("Tenggelamkan!: The Game")
         self.geometry("1000x800")
 
         # the container is where we'll stack a bunch of frames
@@ -46,6 +46,8 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
+        label00 = tk.Label(self, text=user_board.render())
 
         label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
         label_11 = tk.Label(self, text="Format penulisan 'X sampai X' (misal A4 sampai A9)", font=("bold", 10))
@@ -92,7 +94,7 @@ class KapalSatu(tk.Frame):
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
         self.board = 100 * [" "]
-        label_1 = tk.Label(self, text="Kapal Fathilah (4)", width=20, font=("bold", 10))
+        label_1 = tk.Label(self, text="Kapal Fatahillah (4)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
         label_6 = tk.Label(self, text=self.render())
         label_6.place(x=80, y=430)
@@ -109,7 +111,7 @@ class KapalSatu(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Fatahilah", 4, 1, pos_1])
+            arr_of_ships.append(["Kapal Fatahillah", 4, 1, pos_1])
 
     def render(self):
         output = "      |  "
@@ -310,7 +312,7 @@ def main():
     MISS = "O"
     EMPTY = " "
 
-    ships = [["Carrier", 5, 1], ["Battleships", 4, 2], ["Cruisers", 3, 2], ["Submarines", 2, 1]]
+    ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
 
     functions()
 
@@ -353,10 +355,10 @@ def main():
     fullgame()
 
 def functions():
-    global gridconvert, inv_gridconvert, gen_poslist, onboard, \
+    global grid_convert, inv_gridconvert, gen_poslist, onboard, \
            check_diagonal, grid_pick_tile, get_dirs, getdirs_ext
     
-    def gridconvert(location):
+    def grid_convert(location):
         "Turns A0 coordinates into grid numbers"
         location = TOP.find(location[0]) + (SIDE.find(location[1]) * 10)
         return location
@@ -499,7 +501,7 @@ class Player():
                         print("Coordinates not on board")
                         continue
                     
-                    location = [gridconvert(location[0]), gridconvert(location[1])]
+                    location = [grid_convert(location[0]), grid_convert(location[1])]
                     if check_diagonal(location):
                         print("Diagonal ships are not allowed")
                         continue
@@ -519,7 +521,7 @@ class Player():
         valid = False
         while not valid:
             target = input("Enter position to fire at: ").upper()
-            try: target = gridconvert(target)
+            try: target = grid_convert(target)
             except:
                 print("Invalid coordinates")
                 continue
