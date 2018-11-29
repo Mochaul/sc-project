@@ -1,6 +1,6 @@
 # Tenggelamkan!: Sebuah Proyek Sistem Cerdas
 
-Tenggelamkan adalah permainan blabla
+Tenggelamkan adalah permainan menembak kapal ilegal yang mengambil ikan di negara tercinta kita, Negara Indonesia. Disini user akan berlawanan dengan AI yang berperan sebagai nelayan ilegal dan kita bertugas menenggelamkan mereka sebelum mereka menenggelamkan kita. Game ini terinspirasi dari Menteri Kelautan dan Perikanan Ibu Susi Pudjiastuti, yang bersikap tegas terhadap nelayan yang tidak bertanggung jawab.
 
 ## Starting the game
 
