@@ -105,15 +105,6 @@ class StartPage(tk.Frame):
             arrship5 = ["Kapal Andau", 2, pos_5]
             arrall = [arrship1,arrship2,arrship3,arrship4,arrship5]
             return arrall
-    
-    def fullgame():
-        global user_board, comp_board
-        global user, comp
-        
-        # Set the board
-        user_board = Board(100)
-        comp_board = Board(100)
-
 
     def render(self):
 
