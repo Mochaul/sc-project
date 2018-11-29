@@ -30,7 +30,7 @@ def main():
         comp_board = Board(100)
 
         user = Player(comp_board)
-        comp = AI(0, user_board)
+        comp = AI(1, user_board)
 
         user.setup(user_board)
         comp.setup(comp_board)
