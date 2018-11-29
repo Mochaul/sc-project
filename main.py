@@ -1,4 +1,6 @@
-import gui, board, player, ai
+from board import *
+from player import *
+from ai import *
 
 def main():
     #app = gui.GUI()

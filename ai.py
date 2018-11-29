@@ -1,4 +1,4 @@
-import gui, board, player
+
 class AI:
     def __init__(self, difficulty, enemy):
         self.difficulty = difficulty
@@ -8,7 +8,8 @@ class AI:
 
     def setup(self, board):
         from random import choice, randint
-        for ship in ships:
+        import main
+        for ship in main.ships:
             length, number = ship[1], ship[2]
             for i in range(number):
                 allocated = False
@@ -27,12 +28,13 @@ class AI:
                     allocated = True
 
     def turn(self, end = True):
+        import main
         result = self.modelist[self.mode]()
         if end:
             if result[0]:
-                print("\nComputer hit %s" % inv_gridconvert(result[1]))
+                print("\nComputer hit %s" % main.inv_gridconvert(result[1]))
             else:
-                print("\nComputer missed %s" % inv_gridconvert(result[1]))
+                print("\nComputer missed %s" % main.inv_gridconvert(result[1]))
 
     def hunt(self):
         target = self.picktile()
