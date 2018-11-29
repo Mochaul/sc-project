@@ -1,6 +1,5 @@
 import tkinter as tk                # python3
 from tkinter import font  as tkfont # python3
-import board, ships, player, ai
 
 TOP = "ABCDEFGHIJ"
 SIDE = "0123456789"
@@ -47,7 +46,7 @@ class StartPage(tk.Frame):
         self.controller = controller
 
         label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
-        label_11 = tk.Label(self, text="Format penulisan X sampai X (misal A4 sampai A9)", font=("bold", 10))
+        label_11 = tk.Label(self, text="Format penulisan 'X sampai X' (misal A4 sampai A9)", font=("bold", 10))
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
         self.board = 100 * [" "]
@@ -61,8 +60,12 @@ class StartPage(tk.Frame):
         label_4.place(x=70, y=280)
         label_5 = tk.Label(self, text="Kapal Andau (2)", width=20, font=("bold", 10))
         label_5.place(x=85, y=330)
-        label6 = tk.Label(self, text=self.render())
-        label6.place(x = 80, y = 430)
+        label_6 = tk.Label(self, text=self.render())
+        label_6.place(x = 80, y = 430)
+
+        self.var = tk.StringVar(self) 
+        option_menu = tk.OptionMenu(self, self.var, "easy","medium","hard") 
+        option_menu.place(x=200,y=350)
 
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
@@ -75,9 +78,9 @@ class StartPage(tk.Frame):
         self.entry_5 = tk.Entry(self)
         self.entry_5.place(x=240, y=330)
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
         self.button.place(x=130, y = 380)
-        self.button2.place(x= 240, y = 380)
+        self.button_2.place(x= 240, y = 380)
 
 
 
@@ -87,6 +90,7 @@ class StartPage(tk.Frame):
         pos_3 = self.entry_3.get()
         pos_4 = self.entry_4.get()
         pos_5 = self.entry_5.get()
+        option = self.var.get()
         self.entry_1.delete(0, 'end')
         self.entry_2.delete(0, 'end')
         self.entry_3.delete(0, 'end')
@@ -97,17 +101,15 @@ class StartPage(tk.Frame):
                 pos_1[1] in SIDE and pos_2[1] in SIDE and pos_3[1] in SIDE and pos_4[1] in SIDE and pos_5[1] in SIDE
                 and pos_1[-1] in SIDE and pos_2[-1] in SIDE and pos_3[-1] in SIDE and pos_4[-1] in SIDE and pos_5[
                     -1] in SIDE):
-            print ("true")
-            arrship1 = ["Kapal Martadinata", 5, pos_1]
-            arrship2 = ["Kapal Fatahillah", 4, pos_2]
-            arrship3 = ["Kapal Cakra", 3, pos_3]
-            arrship4 = ["Kapal Boa", 3, pos_4]
-            arrship5 = ["Kapal Andau", 2, pos_5]
-            arrall = [arrship1,arrship2,arrship3,arrship4,arrship5]
-            return arrall
+            arr_ship_1 = ["Kapal Martadinata", 5, pos_1]
+            arr_ship_2 = ["Kapal Fatahillah", 4, pos_2]
+            arr_ship_3 = ["Kapal Cakra", 3, pos_3]
+            arr_ship_4 = ["Kapal Boa", 3, pos_4]
+            arr_ship_5 = ["Kapal Andau", 2, pos_5]
+            arr_all = [arr_ship_1,arr_ship_2,arr_ship_3,arr_ship_4,arr_ship_5, option]
+            return arr_all
 
     def render(self):
-
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
@@ -126,18 +128,18 @@ class PageOne(tk.Frame):
         left = tk.Frame(self, borderwidth=2, relief="solid")
         right = tk.Frame(self, borderwidth=2, relief="solid")
         self.board = 100 * [" "]
-        label2 = tk.Label(left, text="Anda")
+        label2 = tk.Label(left, text="Pembela Tanah Air")
         self.text_tembak = tk.StringVar(self)
         button1 = tk.Button(left, text="Tenggelamkan!", command=self.on_button)
-        self.entry8 = tk.Entry(left, textvariable = self.text_tembak)
+        self.entry_8 = tk.Entry(left, textvariable = self.text_tembak)
         label15 = tk.Label(left, text= self.render())
-        label3 = tk.Label(right, text="Lawan")
+        label3 = tk.Label(right, text="Nelayan Ilegal")
         label14 = tk.Label(right, text=self.render())
 
         left.pack(side="left", expand=True, fill="both")
         right.pack(side="right", expand=True, fill="both")
         label2.pack()
-        self.entry8.pack()
+        self.entry_8.pack()
         button1.pack()
         label15.pack()
         label3.pack()
@@ -155,7 +157,7 @@ class PageOne(tk.Frame):
 
 
     def on_button(self):
-        pos = self.entry8.get()
+        pos = self.entry_8.get()
         if (len(pos)!=2):
             print ("input tidak valid masukan input yang valid")
         else :
@@ -166,5 +168,5 @@ class PageOne(tk.Frame):
                     print("input tidak valid masukan input yang valid")
                 else :
                     return pos
-        print(self.entry8.get())
-        self.entry8.delete(0, 'end')
+        print(self.entry_8.get())
+        self.entry_8.delete(0, 'end')
