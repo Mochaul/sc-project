@@ -8,8 +8,13 @@ HIT = "X"
 MISS = "O"
 EMPTY = " "
 arr_of_ships = []
+ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
 arr_ship_player =100 * [" "]
 arr_ship_enemy = 100 * [" "]
+board_enemy = 100*[" "]
+HP_player = 17
+HP_Enemy = 17
+counter =1
 diff = ""
 
 class GUI(tk.Tk):
@@ -687,26 +692,65 @@ class GameStart(tk.Frame):
         self.label15.pack()
         label3.pack()
         self.label14.pack()
+        self.setupAI()
 
-    def setupAI(self, board):
-        from random import choice, randint
-        for ship in ships:
-            length, number = ship[1], ship[2]
-            for i in range(number):
+    def setupAI(self):
+        from random import *
+        for i in ships:
+            length, number = i[1], i[2]
+            for x in range(number):
                 allocated = False
                 while not allocated:
-                    location = [randint(0, 99), 0]
-                    direction = choice(getdirs(location[0]))
-                    location[1] = location[0] + direction
-
-                    location = gen_poslist(location, length)
-
-                    if not board.legal_ship(location):
+                    location = [randint(0,99),0]
+                    dir = choice(self.getdirs(location))
+                    location[1]= location[0] + dir
+                    location = self.gen_postlist(location, length)
+                    if not self.legal_ship(location) :
                         continue
+                    for y in location:
+                        arr_ship_enemy[y] = SHIP
 
-                    board.add_ship(location)
-                    board.ships += length
-                    allocated = True
+
+
+    def getdirs(self,pos):
+        output =[]
+        if pos % 10 != 9: output += [1]
+        if pos % 10 != 0: output += [-1]
+        if pos < 90: output += [10]
+        if pos > 9: output += [-10]
+        return output
+
+    def gen_postlist(self,location,length):
+        direction = location[1] - location[0]
+        if abs(direction) >= 10:
+            if direction < 0:
+                direction = -10
+            else:
+                direction = 10
+        else:
+            if direction < 0:
+                direction = -1
+            else:
+                direction = 1
+        location = [location[0], location[0] + direction]
+
+        poslist = []
+        for pos in range(location[0], location[0] + (length * direction), direction):
+            poslist += [pos]
+
+        return poslist
+
+    def legal_ship(self, location):
+        direction = location[1] - location[0]
+
+        for pos in location:
+            if not (0 <= pos <= 99) or self.board[pos] == SHIP:
+                return False
+
+        if abs(direction) == 1 and int(location[0] / 10) != int(location[-1] / 10):
+            return False
+
+        return True
 
     def render(self, arr):
         output = "      |  "
@@ -765,7 +809,7 @@ def main():
 
     ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
 
-    functions()
+    #functions()
 
     def fullgame():
         global user_board, comp_board
