@@ -6,11 +6,11 @@ Tenggelamkan! adalah permainan menembak kapal ilegal yang mengambil ikan di nega
 
 ## Starting the game
 
-Run *main.py* using python3 and have fun! :)
+Run *main.py* using python3 and have fun!:)
 
 ## Authors
 
 **Tim Anak Intelligent**  
-Mochamad Aulia Akbar Praditomo (1606827145)  
-Fajrin Maulana Kingwijati (1606837631)  
-Tirta Hema (1606879602)
+Mochamad Aulia Akbar Praditomo  
+Fajrin Maulana Kingwijati  
+Tirta Hema
