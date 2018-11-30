@@ -3,7 +3,12 @@ from tkinter import font  as tkfont # python3
 
 TOP = "ABCDEFGHIJ"
 SIDE = "0123456789"
+SHIP = "S"
+HIT = "X"
+MISS = "O"
+EMPTY = " "
 arr_of_ships = []
+arr_ship_player =100 * [" "]
 
 class GUI(tk.Tk):
 
@@ -47,7 +52,7 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label00 = tk.Label(self, text=user_board.render())
+        #label00 = tk.Label(self, text=user_board.render())
 
         label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
         label_11 = tk.Label(self, text="Format penulisan 'X sampai X' (misal A4 sampai A9)", font=("bold", 10))
@@ -71,7 +76,37 @@ class StartPage(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Martadinata", 5, 1, pos_1])
+#            arr_of_ships.append(["Kapal Martadinata", 5, 1, pos_1]) :
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1])*10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1])*10)
+            if location % 10 == location_1 % 10 or \
+                    int(location / 10) == int(location_1 / 10):
+                direction = location_1 - location
+                if abs(direction) >= 10:
+                    if direction < 0:
+                        direction = -10
+                    else:
+                        direction = 10
+                else:
+                    if direction < 0:
+                        direction = -1
+                    else:
+                        direction = 1
+                location = [location, location + direction]
+
+                pos_list = []
+                #generate posisi kapal
+                for pos in range(location[0], location[0] + (5 * direction), direction):
+                    pos_list += [pos]
+                #add ship
+                for x in pos_list:
+                    arr_ship_player[x]=SHIP
+            else:
+                print("kapal tidak boleh diagonal")
+                return True
+
+
+
 
     def render(self):
         output = "      |  "
@@ -109,9 +144,44 @@ class KapalSatu(tk.Frame):
     def on_button(self):
         pos_1 = self.entry_1.get()
         self.entry_1.delete(0, 'end')
-
+        flag = True
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Fatahillah", 4, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if location % 10 == location_1 % 10 or \
+                    int(location / 10) == int(location_1 / 10):
+                direction = location_1 - location
+                if abs(direction) >= 10:
+                    if direction < 0:
+                        direction = -10
+                    else:
+                        direction = 10
+                else:
+                    if direction < 0:
+                        direction = -1
+                    else:
+                        direction = 1
+                location = [location, location + direction]
+
+                pos_list = []
+                # generate posisi kapal
+                for pos in range(location[0], location[0] + (4 * direction), direction):
+                    pos_list += [pos]
+                #check ship
+                for x in pos_list:
+                    if (arr_ship_player[x]==SHIP):
+                        print ("sudah ada kapal di posisi itu")
+                        flag = False
+
+                if (flag):
+                    # add ship
+                    for i in pos_list:
+                        arr_ship_player[i] = SHIP
+                print(arr_ship_player)
+            else:
+                print("kapal tidak boleh diagonal")
+                return True
+
 
     def render(self):
         output = "      |  "
@@ -151,7 +221,39 @@ class KapalDua(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Cakra", 3, 1, pos_1])
+            #arr_of_ships.append(["Kapal Cakra", 3, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if location % 10 == location_1 % 10 or \
+                    int(location / 10) == int(location_1 / 10):
+                direction = location_1 - location
+                if abs(direction) >= 10:
+                    if direction < 0:
+                        direction = -10
+                    else:
+                        direction = 10
+                else:
+                    if direction < 0:
+                        direction = -1
+                    else:
+                        direction = 1
+                location = [location, location + direction]
+
+                pos_list = []
+                # generate posisi kapal
+                for pos in range(location[0], location[0] + (3 * direction), direction):
+                    pos_list += [pos]
+                # check ship
+                for x in pos_list:
+                    if (arr_ship_player[x] == SHIP):
+                        print("sudah ada kapal di posisi itu")
+                        flag = False
+
+                if (flag):
+                    # add ship
+                    for i in pos_list:
+                        arr_ship_player[i] = SHIP
+                print(arr_ship_player)
 
     def render(self):
         output = "      |  "
@@ -191,7 +293,39 @@ class KapalTiga(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Boa", 3, 1, pos_1])
+            #arr_of_ships.append(["Kapal Boa", 3, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if location % 10 == location_1 % 10 or \
+                    int(location / 10) == int(location_1 / 10):
+                direction = location_1 - location
+                if abs(direction) >= 10:
+                    if direction < 0:
+                        direction = -10
+                    else:
+                        direction = 10
+                else:
+                    if direction < 0:
+                        direction = -1
+                    else:
+                        direction = 1
+                location = [location, location + direction]
+
+                pos_list = []
+                # generate posisi kapal
+                for pos in range(location[0], location[0] + (3 * direction), direction):
+                    pos_list += [pos]
+                # check ship
+                for x in pos_list:
+                    if (arr_ship_player[x] == SHIP):
+                        print("sudah ada kapal di posisi itu")
+                        flag = False
+
+                if (flag):
+                    # add ship
+                    for i in pos_list:
+                        arr_ship_player[i] = SHIP
+                print(arr_ship_player)
 
     def render(self):
         output = "      |  "
@@ -231,7 +365,39 @@ class KapalEmpat(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Andau", 2, 1, pos_1])
+            #arr_of_ships.append(["Kapal Andau", 2, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if location % 10 == location_1 % 10 or \
+                    int(location / 10) == int(location_1 / 10):
+                direction = location_1 - location
+                if abs(direction) >= 10:
+                    if direction < 0:
+                        direction = -10
+                    else:
+                        direction = 10
+                else:
+                    if direction < 0:
+                        direction = -1
+                    else:
+                        direction = 1
+                location = [location, location + direction]
+
+                pos_list = []
+                # generate posisi kapal
+                for pos in range(location[0], location[0] + (2 * direction), direction):
+                    pos_list += [pos]
+                # check ship
+                for x in pos_list:
+                    if (arr_ship_player[x] == SHIP):
+                        print("sudah ada kapal di posisi itu")
+                        flag = False
+
+                if (flag):
+                    # add ship
+                    for i in pos_list:
+                        arr_ship_player[i] = SHIP
+                print(arr_ship_player)
 
     def render(self):
         output = "      |  "
