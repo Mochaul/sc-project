@@ -355,7 +355,7 @@ def main():
     fullgame()
 
 def functions():
-    global grid_convert, inv_gridconvert, gen_poslist, onboard, \
+    global grid_convert, inv_gridconvert, gen_pos_list, onboard, \
            check_diagonal, grid_pick_tile, get_dirs, getdirs_ext
     
     def grid_convert(location):
@@ -368,7 +368,7 @@ def functions():
         location = TOP[location % 10] + SIDE[int(location / 10)]
         return location
 
-    def gen_poslist(location, length):
+    def gen_pos_list(location, length):
         "Turns [1, 2] coordinates and length into list of grid numbers"
         direction = location[1] - location[0]
         if abs(direction) >= 10:
@@ -483,7 +483,7 @@ class Player():
         self.enemy = enemy
     
     def setup(self, board):
-        print(user_board.render())
+        # print(user_board.render())
         print("Enter ship coordinates as \"A0 to A3\"")
         for ship in ships:
             name, length, number = ship[0], ship[1], ship[2]
@@ -506,7 +506,7 @@ class Player():
                         print("Diagonal ships are not allowed")
                         continue
                     
-                    location = gen_poslist(location, length)
+                    location = gen_pos_list(location, length)
                     if not board.legal_ship(location):
                         print("Ship intersects map or other ships")
                         continue
@@ -558,7 +558,7 @@ class AI:
                     direction = choice(get_dirs(location[0]))
                     location[1] = location[0] + direction
 
-                    location = gen_poslist(location, length)
+                    location = gen_pos_list(location, length)
 
                     if not board.legal_ship(location):
                         continue
