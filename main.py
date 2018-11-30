@@ -737,11 +737,11 @@ class GameStart(tk.Frame):
                 else :
                     location = TOP.find(pos[0]) + (SIDE.find(pos[1]) * 10)
                     if (arr_ship_ai[location]=='S'):
-                        board_enemy[location] = HIT
+                        arr_arr_ship_ai[location] = HIT
                         HP_Enemy=-1
                     elif(arr_ship_ai[location]==' '):
-                        board_enemy[location] = MISS
-        self.label14.configure(text= self.render(board_enemy))
+                        arr_arr_ship_ai[location] = MISS
+        self.label14.configure(text= self.render(arr_arr_ship_ai))
         print(self.entry_8.get())
         self.entry_8.delete(0, 'end')
 
