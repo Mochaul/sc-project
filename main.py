@@ -9,7 +9,8 @@ MISS = "O"
 EMPTY = " "
 ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
 arr_ship_player =100 * [" "]
-arr_ship_enemy = 100 * [" "]
+arr_ship_ai = 100 * [" "]
+arr_arr_ship_ai = []
 diff = ""
 
 global grid_convert, inv_gridconvert, gen_pos_list, onboard, \
@@ -720,7 +721,7 @@ class GameStart(tk.Frame):
 
     def refresh(self):
         self.label15.configure(text =self.render(arr_ship_player))
-        self.label14.configure(text= self.render(arr_ship_enemy))
+        self.label14.configure(text= self.render(arr_ship_ai))
 		
     def on_button(self):
         pos = self.entry_8.get()
@@ -735,10 +736,10 @@ class GameStart(tk.Frame):
                     print("input tidak valid masukan input yang valid")
                 else :
                     location = TOP.find(pos[0]) + (SIDE.find(pos[1]) * 10)
-                    if (arr_ship_enemy[location]=='S'):
+                    if (arr_ship_ai[location]=='S'):
                         board_enemy[location] = HIT
                         HP_Enemy=-1
-                    elif(arr_ship_enemy[location]==' '):
+                    elif(arr_ship_ai[location]==' '):
                         board_enemy[location] = MISS
         self.label14.configure(text= self.render(board_enemy))
         print(self.entry_8.get())
@@ -747,47 +748,6 @@ class GameStart(tk.Frame):
 def main():
     app = GUI()
     app.mainloop()
-
-    def fullgame():
-        global user_board, comp_board
-        global user, comp
-        
-        user_board = Board(100)
-        comp_board = Board(100)
-
-        user = Player(comp_board)
-        comp = AI(0, user_board)
-
-        user.setup(user_board)
-        comp.setupAI(comp_board)
-
-        print (user_board.render())
-        print(comp_board.render())
-
-        while (user_board.ships and comp_board.ships) > 0:
-            user.turn()
-            if comp_board.ships > 0:
-                comp.turn()
-                print("Here is your board:")
-                print(user_board.render())
-                
-        if user_board.ships > 0:
-            winner = ["You", user_board.ships]
-        else:
-            winner = ["The computer", comp_board.ships]
-        print("\nGame over.\n%s won with %s ships remaining" % (winner[0], winner[1]))
-
-    def ai_test():
-        user_board = Board(100)
-        user_board.ships = 101
-        comp = AI(0, user_board)
-
-        while True:
-            comp.turn()
-            print(user_board.render())
-            input()
-
-    fullgame()
 
 main()
 
