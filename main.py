@@ -9,6 +9,7 @@ MISS = "O"
 EMPTY = " "
 arr_of_ships = []
 arr_ship_player =100 * [" "]
+arr_ship_enemy = 100 * [" "]
 
 class GUI(tk.Tk):
 
@@ -577,6 +578,7 @@ def main():
         comp.setup(comp_board)
 
         print (user_board.render())
+        print(comp_board.render())
 
         while (user_board.ships and comp_board.ships) > 0:
             user.turn()
@@ -731,6 +733,10 @@ class Board:
         for x in range(100):
             self.board[x] = arr_ship_player[x]
 
+    def arr_copy_enemy(self):
+        for x in range(100):
+            arr_ship_enemy[x] = self.board[x]
+
 class Player():
     def __init__(self, enemy):
         self.enemy = enemy
@@ -820,6 +826,7 @@ class AI:
                     board.add_ship(location)
                     board.ships += length
                     allocated = True
+        board.arr_copy_enemy()
 
     def turn(self, end = True):
         result = self.modelist[self.mode]()
