@@ -568,10 +568,9 @@ class KapalLima(tk.Frame):
         self.label_6.configure(text = output)
 
 class AI:
-    def __init__(self, difficulty, enemy):
+    def __init__(self, difficulty):
         self.difficulty = difficulty
         self.mode = "HUNT"
-        self.enemy = enemy
         self.modelist = {"HUNT": self.hunt, "ACQUIRE": self.acquire, "DESTROY": self.destroy}
 
     def turn(self, end = True):
@@ -586,17 +585,17 @@ class AI:
         target = self.pick_tile()
 
         for i in range(self.difficulty):
-            if self.enemy.board[target] == SHIP:
+            if arr_ship_player == SHIP:
                 break
             else:
                 target = self.pick_tile()
 
-        if self.enemy.board[target] == SHIP:
+        if arr_ship_player == SHIP:
             self.mode = "ACQUIRE"
             self.acq_list = [target]
 
             for direction in get_dirs(target):
-                if self.enemy.board[target + direction] not in (MISS, HIT):
+                if arr_ship_player[target + direction] not in (MISS, HIT):
                     self.acq_list += [direction]
 
         return self.enemy.fire(target), target
@@ -605,13 +604,13 @@ class AI:
         target = self.acq_list[0] + self.acq_list[1]
 
         for i in range(self.difficulty):
-            if self.enemy.board[target] == SHIP:
+            if arr_ship_player == SHIP:
                 break
             else:
                 self.acq_list.pop(1)
                 target = self.acq_list[0] + self.acq_list[1]
 
-        if self.enemy.board[target] == SHIP:
+        if arr_ship_player == SHIP:
             result = self.enemy.fire(target)
             self.dest_list = self.find_ship(self.acq_list[0], self.acq_list[1])
             self.mode = "DESTROY"
@@ -643,12 +642,12 @@ class AI:
                     continue
                 
                 prog_pos += direction
-                if self.enemy.board[prog_pos] == HIT:
+                if arr_ship_player[prog_pos] == HIT:
                     pass
-                elif self.enemy.board[prog_pos] == EMPTY:
+                elif arr_ship_player[prog_pos] == EMPTY:
                     pos_list += [prog_pos]
                     ignore = True
-                elif self.enemy.board[prog_pos] == MISS:
+                elif arr_ship_player[prog_pos] == MISS:
                     ignore = True
                 else:
                     pos_list += [prog_pos]
@@ -657,7 +656,7 @@ class AI:
 
     def pick_tile(self):
         target = grid_pick_tile()
-        while self.enemy.board[target] in (MISS, HIT):
+        while arr_ship_player in (MISS, HIT):
             target = grid_pick_tile()
         return target
 
