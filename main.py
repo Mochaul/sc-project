@@ -3,7 +3,14 @@ from tkinter import font  as tkfont # python3
 
 TOP = "ABCDEFGHIJ"
 SIDE = "0123456789"
+SHIP = "S"
+HIT = "X"
+MISS = "O"
+EMPTY = " "
 arr_of_ships = []
+arr_ship_player =100 * [" "]
+arr_ship_enemy = 100 * [" "]
+diff = ""
 
 class GUI(tk.Tk):
 
@@ -23,7 +30,7 @@ class GUI(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, KapalSatu, KapalDua, KapalTiga,KapalEmpat, PageOne):
+        for F in (KapalSatu, KapalDua, KapalTiga, KapalEmpat, KapalLima, GameStart):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -33,7 +40,7 @@ class GUI(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("StartPage")
+        self.show_frame("KapalSatu")
 
     def show_frame(self, page_name):
         '''Show a frame for the given page name'''
@@ -41,13 +48,13 @@ class GUI(tk.Tk):
         frame.tkraise()
 
 
-class StartPage(tk.Frame):
+class KapalSatu(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label00 = tk.Label(self, text=user_board.render())
+        #label00 = tk.Label(self, text=user_board.render())
 
         label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
         label_11 = tk.Label(self, text="Format penulisan 'X sampai X' (misal A4 sampai A9)", font=("bold", 10))
@@ -56,48 +63,8 @@ class StartPage(tk.Frame):
         self.board = 100 * [" "]
         label_1 = tk.Label(self, text="Kapal Martadinata (5)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
-        self.entry_1 = tk.Entry(self)
-        self.entry_1.place(x=240, y=130)
-
-        self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalSatu"))
-        self.button.place(x=130, y = 380)
-        self.button_2.place(x= 240, y = 380)
-
-    def on_button(self):
-        pos_1 = self.entry_1.get()
-        self.entry_1.delete(0, 'end')
-
-        if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Martadinata", 5, 1, pos_1])
-
-    def render(self):
-        output = "      |  "
-        output += "  |   ".join(i for i in TOP)
-        for row in range(10):
-            output += "\n" + (55* "-") + "\n" + SIDE[row] + " "
-            for col in range(10):
-                output += "    | %s " % self.board[row * 10 + col]
-        output += "\n" + (55 * "-")
-        return output
-
-class KapalSatu(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-
-        label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
-        label_11 = tk.Label(self, text="Format penulisan 'X sampai X' (misal A4 sampai A9)", font=("bold", 10))
-        label_0.place(x=70, y=53)
-        label_11.place(x=90, y=100)
-        self.board = 100 * [" "]
-        label_1 = tk.Label(self, text="Kapal Fatahillah (4)", width=20, font=("bold", 10))
-        label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
@@ -111,7 +78,47 @@ class KapalSatu(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Fatahillah", 4, 1, pos_1])
+#            arr_of_ships.append(["Kapal Martadinata", 5, 1, pos_1]) :
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1])*10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1])*10)
+            if (abs(location-location_1) == 4 or abs(location-location_1) == 40):
+                if location % 10 == location_1 % 10 or \
+                        int(location / 10) == int(location_1 / 10):
+                    direction = location_1 - location
+                    if abs(direction) >= 10:
+                        if direction < 0:
+                            direction = -10
+                        else:
+                            direction = 10
+                    else:
+                        if direction < 0:
+                            direction = -1
+                        else:
+                            direction = 1
+                    location = [location, location + direction]
+
+                    pos_list = []
+                    # generate posisi kapal
+                    for pos in range(location[0], location[0] + (5 * direction), direction):
+                        pos_list += [pos]
+                    # add ship
+                    for x in pos_list:
+                        arr_ship_player[x] = SHIP
+                else:
+                    print("kapal tidak boleh diagonal")
+                    return True
+            else :
+                print ("harus 5 kotak terisi")
+
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
     def render(self):
         output = "      |  "
@@ -119,7 +126,8 @@ class KapalSatu(tk.Frame):
         for row in range(10):
             output += "\n" + (55* "-") + "\n" + SIDE[row] + " "
             for col in range(10):
-                output += "    | %s " % self.board[row * 10 + col]
+                x = row*10 + col
+                output += "    | %s " % arr_ship_player[x]
         output += "\n" + (55 * "-")
         return output
 
@@ -134,10 +142,10 @@ class KapalDua(tk.Frame):
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
         self.board = 100 * [" "]
-        label_1 = tk.Label(self, text="Kapal Cakra (3)", width=20, font=("bold", 10))
+        label_1 = tk.Label(self, text="Kapal Fatahillah (4)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
@@ -149,9 +157,56 @@ class KapalDua(tk.Frame):
     def on_button(self):
         pos_1 = self.entry_1.get()
         self.entry_1.delete(0, 'end')
-
+        flag = True
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Cakra", 3, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if (abs(location-location_1)==3 or abs(location-location_1)==30):
+                if location % 10 == location_1 % 10 or \
+                        int(location / 10) == int(location_1 / 10):
+                    direction = location_1 - location
+                    if abs(direction) >= 10:
+                        if direction < 0:
+                            direction = -10
+                        else:
+                            direction = 10
+                    else:
+                        if direction < 0:
+                            direction = -1
+                        else:
+                            direction = 1
+                    location = [location, location + direction]
+
+                    pos_list = []
+                    # generate posisi kapal
+                    for pos in range(location[0], location[0] + (4 * direction), direction):
+                        pos_list += [pos]
+                    #check ship
+                    for x in pos_list:
+                        if (arr_ship_player[x]==SHIP):
+                            print ("sudah ada kapal di posisi itu")
+                            flag = False
+
+                    if (flag):
+                        # add ship
+                        for i in pos_list:
+                            arr_ship_player[i] = SHIP
+                    print(arr_ship_player)
+                else:
+                    print("kapal tidak boleh diagonal")
+                    return True
+            else :
+                print("harus 4 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
+
 
     def render(self):
         output = "      |  "
@@ -159,7 +214,8 @@ class KapalDua(tk.Frame):
         for row in range(10):
             output += "\n" + (55* "-") + "\n" + SIDE[row] + " "
             for col in range(10):
-                output += "    | %s " % self.board[row * 10 + col]
+                x = row * 10 + col
+                output += "    | %s " % self.board[x]
         output += "\n" + (55 * "-")
         return output
 
@@ -174,10 +230,10 @@ class KapalTiga(tk.Frame):
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
         self.board = 100 * [" "]
-        label_1 = tk.Label(self, text="Kapal Boa (3)", width=20, font=("bold", 10))
+        label_1 = tk.Label(self, text="Kapal Cakra (3)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
@@ -191,7 +247,54 @@ class KapalTiga(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Boa", 3, 1, pos_1])
+            #arr_of_ships.append(["Kapal Cakra", 3, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if (abs(location - location_1) == 2 or abs(location - location_1) == 20):
+                location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+                location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+                if location % 10 == location_1 % 10 or \
+                        int(location / 10) == int(location_1 / 10):
+                    direction = location_1 - location
+                    if abs(direction) >= 10:
+                        if direction < 0:
+                            direction = -10
+                        else:
+                            direction = 10
+                    else:
+                        if direction < 0:
+                            direction = -1
+                        else:
+                            direction = 1
+                    location = [location, location + direction]
+
+                    pos_list = []
+                    # generate posisi kapal
+                    flag3 = True
+                    for pos in range(location[0], location[0] + (3 * direction), direction):
+                        pos_list += [pos]
+                    # check ship
+                    for x in pos_list:
+                        if (arr_ship_player[x] == SHIP):
+                            print("sudah ada kapal di posisi itu")
+                            flag3 = False
+
+                    if (flag3):
+                        # add ship
+                        for i in pos_list:
+                            arr_ship_player[i] = SHIP
+                    print(arr_ship_player)
+        else :
+            print("harus 3 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
     def render(self):
         output = "      |  "
@@ -214,15 +317,15 @@ class KapalEmpat(tk.Frame):
         label_0.place(x=70, y=53)
         label_11.place(x=90, y=100)
         self.board = 100 * [" "]
-        label_1 = tk.Label(self, text="Kapal Andau (2)", width=20, font=("bold", 10))
+        label_1 = tk.Label(self, text="Kapal Boa (3)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalLima"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
 
@@ -231,7 +334,53 @@ class KapalEmpat(tk.Frame):
         self.entry_1.delete(0, 'end')
 
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
-            arr_of_ships.append(["Kapal Andau", 2, 1, pos_1])
+            #arr_of_ships.append(["Kapal Boa", 3, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if (abs(location - location_1) == 2 or abs(location - location_1) == 20):
+                location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+                location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+                if location % 10 == location_1 % 10 or \
+                        int(location / 10) == int(location_1 / 10):
+                    direction = location_1 - location
+                    if abs(direction) >= 10:
+                        if direction < 0:
+                            direction = -10
+                        else:
+                            direction = 10
+                    else:
+                        if direction < 0:
+                            direction = -1
+                        else:
+                            direction = 1
+                    location = [location, location + direction]
+                    flag1 = True
+                    pos_list = []
+                    # generate posisi kapal
+                    for pos in range(location[0], location[0] + (3 * direction), direction):
+                        pos_list += [pos]
+                    # check ship
+                    for x in pos_list:
+                        if (arr_ship_player[x] == SHIP):
+                            print("sudah ada kapal di posisi itu")
+                            flag1 = False
+
+                    if (flag1):
+                        # add ship
+                        for i in pos_list:
+                            arr_ship_player[i] = SHIP
+                    print(arr_ship_player)
+        else:
+            print("harus 3 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
     def render(self):
         output = "      |  "
@@ -243,9 +392,112 @@ class KapalEmpat(tk.Frame):
         output += "\n" + (55 * "-")
         return output
 
-class PageOne(tk.Frame):
+class KapalLima(tk.Frame):
 
     def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label_0 = tk.Label(self, text="WELCOME TO TENGGELAMKAN!", font=("bold", 15))
+        label_11 = tk.Label(self, text="Format penulisan 'X sampai X' (misal A4 sampai A9)", font=("bold", 10))
+        label_0.place(x=70, y=53)
+        label_11.place(x=90, y=100)
+        self.board = 100 * [" "]
+        label_1 = tk.Label(self, text="Kapal Andau (2)", width=20, font=("bold", 10))
+        label_1.place(x=80, y=130)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
+        self.entry_1 = tk.Entry(self)
+        self.entry_1.place(x=240, y=130)
+        self.var  = tk.StringVar(self)
+        optionMenu = tk.OptionMenu(self, self.var, "easy","medium","hard")
+        optionMenu.place(x=240,y=180)
+        self.button = tk.Button(self, text="check", command=self.on_button)
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("GameStart"))
+        self.button.place(x=130, y = 380)
+        self.button_2.place(x= 240, y = 380)
+        self.button3 = tk.Button(self, text="print", command= self.click_me())
+        self.button3.pack()
+
+    def on_button(self):
+        pos_1 = self.entry_1.get()
+        self.entry_1.delete(0, 'end')
+        diff = self.var.get()
+        if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
+            #arr_of_ships.append(["Kapal Andau", 2, 1, pos_1])
+            location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
+            location_1 = TOP.find(pos_1[-2]) + (SIDE.find(pos_1[-1]) * 10)
+            if (abs(location_1-location)==1 or abs(location_1-location)==10):
+                if location % 10 == location_1 % 10 or \
+                        int(location / 10) == int(location_1 / 10):
+                    direction = location_1 - location
+                    if abs(direction) >= 10:
+                        if direction < 0:
+                            direction = -10
+                        else:
+                            direction = 10
+                    else:
+                        if direction < 0:
+                            direction = -1
+                        else:
+                            direction = 1
+                    location = [location, location + direction]
+
+                    pos_list = []
+                    # generate posisi kapal
+                    flag2 = True
+                    for pos in range(location[0], location[0] + (2 * direction), direction):
+                        pos_list += [pos]
+                    # check ship
+                    for x in pos_list:
+                        if (arr_ship_player[x] == SHIP):
+                            print("sudah ada kapal di posisi itu")
+                            flag2 = False
+
+                    if (flag2):
+                        # add ship
+                        for i in pos_list:
+                            arr_ship_player[i] = SHIP
+                    print(arr_ship_player)
+        else :
+            print("harus 2 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
+
+    def render(self):
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55* "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                output += "    | %s " % self.board[row * 10 + col]
+        output += "\n" + (55 * "-")
+        return output
+
+    def click_me(self):
+        print("tes")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text = output)
+
+
+class GameStart(tk.Frame):
+
+    def __init__(self, parent, controller):
+        
         print(arr_of_ships)
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -269,7 +521,27 @@ class PageOne(tk.Frame):
         label3.pack()
         label14.pack()
 
-    def render(self, arr):
+    def setup(self, board):
+        from random import choice, randint
+        for ship in ships:
+            length, number = ship[1], ship[2]
+            for i in range(number):
+                allocated = False
+                while not allocated:
+                    location = [randint(0, 99), 0]
+                    direction = choice(getdirs(location[0]))
+                    location[1] = location[0] + direction
+
+                    location = gen_poslist(location, length)
+
+                    if not board.legal_ship(location):
+                        continue
+
+                    board.add_ship(location)
+                    board.ships += length
+                    allocated = True
+
+    def render(self,arr):
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
@@ -341,6 +613,9 @@ def main():
         user.setup(user_board)
         comp.setup(comp_board)
 
+        print (user_board.render())
+        print(comp_board.render())
+
         while (user_board.ships and comp_board.ships) > 0:
             user.turn()
             if comp_board.ships > 0:
@@ -367,7 +642,7 @@ def main():
     fullgame()
 
 def functions():
-    global grid_convert, inv_gridconvert, gen_poslist, onboard, \
+    global grid_convert, inv_gridconvert, gen_pos_list, onboard, \
            check_diagonal, grid_pick_tile, get_dirs, getdirs_ext
     
     def grid_convert(location):
@@ -380,7 +655,7 @@ def functions():
         location = TOP[location % 10] + SIDE[int(location / 10)]
         return location
 
-    def gen_poslist(location, length):
+    def gen_pos_list(location, length):
         "Turns [1, 2] coordinates and length into list of grid numbers"
         direction = location[1] - location[0]
         if abs(direction) >= 10:
@@ -490,42 +765,51 @@ class Board:
 
         return True
 
+    def arr_copy (self):
+        for x in range(100):
+            self.board[x] = arr_ship_player[x]
+
+    def arr_copy_enemy(self):
+        for x in range(100):
+            arr_ship_enemy[x] = self.board[x]
+
 class Player():
     def __init__(self, enemy):
         self.enemy = enemy
     
     def setup(self, board):
-        print(user_board.render())
-        print("Enter ship coordinates as \"A0 to A3\"")
-        for ship in ships:
-            name, length, number = ship[0], ship[1], ship[2]
-            print("You have %s %s-long %s" % (number, length, name))
-            for i in range(number):
-                allocated = False
-                while not allocated:
-                    location = input("Enter coords: ").upper().split(" ")
-                    try: location = [location[0], location[-1]]
-                    except:
-                        print("Invalid coordinates")
-                        continue
-                    
-                    if not (onboard(location[0]) and onboard(location[1])):
-                        print("Coordinates not on board")
-                        continue
-                    
-                    location = [grid_convert(location[0]), grid_convert(location[1])]
-                    if check_diagonal(location):
-                        print("Diagonal ships are not allowed")
-                        continue
-                    
-                    location = gen_poslist(location, length)
-                    if not board.legal_ship(location):
-                        print("Ship intersects map or other ships")
-                        continue
-
-                    board.add_ship(location)
-                    board.ships += length
-                    allocated = True
+        board.arr_copy()
+        # print(user_board.render())
+        # print("Enter ship coordinates as \"A0 to A3\"")
+        # for ship in ships:
+        #     name, length, number = ship[0], ship[1], ship[2]
+        #     print("You have %s %s-long %s" % (number, length, name))
+        #     for i in range(number):
+        #         allocated = False
+        #         while not allocated:
+        #             location = input("Enter coords: ").upper().split(" ")
+        #             try: location = [location[0], location[-1]]
+        #             except:
+        #                 print("Invalid coordinates")
+        #                 continue
+        #
+        #             if not (onboard(location[0]) and onboard(location[1])):
+        #                 print("Coordinates not on board")
+        #                 continue
+        #
+        #             location = [grid_convert(location[0]), grid_convert(location[1])]
+        #             if check_diagonal(location):
+        #                 print("Diagonal ships are not allowed")
+        #                 continue
+        #
+        #             location = gen_poslist(location, length)
+        #             if not board.legal_ship(location):
+        #                 print("Ship intersects map or other ships")
+        #                 continue
+        #
+        #             board.add_ship(location)
+        #             board.ships += length
+        #             allocated = True
 
     def turn(self): #Fix redundant firing
         print("Here is the enemy's board:")
@@ -558,26 +842,6 @@ class AI:
         self.mode = "HUNT"
         self.enemy = enemy
         self.modelist = {"HUNT": self.hunt, "ACQUIRE": self.acquire, "DESTROY": self.destroy}
-
-    def setup(self, board):
-        from random import choice, randint
-        for ship in ships:
-            length, number = ship[1], ship[2]
-            for i in range(number):
-                allocated = False
-                while not allocated:
-                    location = [randint(0, 99), 0]
-                    direction = choice(get_dirs(location[0]))
-                    location[1] = location[0] + direction
-
-                    location = gen_poslist(location, length)
-
-                    if not board.legal_ship(location):
-                        continue
-
-                    board.add_ship(location)
-                    board.ships += length
-                    allocated = True
 
     def turn(self, end = True):
         result = self.modelist[self.mode]()
