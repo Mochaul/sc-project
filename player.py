@@ -1,10 +1,12 @@
+# import needed files
 import board, ai
 
+# player class
 class Player():
-    def __init__(self, enemy):
+    def __init__(self, enemy): # class constructor
         self.enemy = enemy
     
-    def setup(self, board):
+    def setup(self, board): #setup method
         import main
         print(main.user_board.render())
         print("Masukan koordinat kapal, contoh \"A0 sampai A3\"")

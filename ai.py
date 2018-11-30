@@ -1,12 +1,12 @@
-
+# Main AI Class
 class AI:
-    def __init__(self, difficulty, enemy):
+    def __init__(self, difficulty, enemy): # Class constructor
         self.difficulty = difficulty
         self.mode = "HUNT"
         self.enemy = enemy
         self.modelist = {"HUNT": self.hunt, "ACQUIRE": self.acquire, "DESTROY": self.destroy}
 
-    def setup(self, board):
+    def setup(self, board): # Setup the board and ships
         from random import choice, randint
         import main
         for ship in main.ships:
@@ -27,7 +27,7 @@ class AI:
                     board.ships += length
                     allocated = True
 
-    def turn(self, end = True):
+    def turn(self, end = True): # function for ai turn
         import main
         result = self.modelist[self.mode]()
         if end:
@@ -36,7 +36,7 @@ class AI:
             else:
                 print("\nNelayan nakal meleset menembak pada koordinat %s" % main.inv_gridconvert(result[1]))
 
-    def hunt(self):
+    def hunt(self): # hunt the player ship
         import main
         target = self.picktile()
 
@@ -56,7 +56,7 @@ class AI:
 
         return self.enemy.fire(target), target
 
-    def acquire(self):
+    def acquire(self): # acquire the player ship
         import main
         target = self.acqlist[0] + self.acqlist[1]
 
@@ -77,7 +77,7 @@ class AI:
 
         return result, target
 
-    def destroy(self):
+    def destroy(self): # destroy player ship
         if len(self.destlist) > 0:
             target = self.destlist[0]
             self.destlist.pop(0)

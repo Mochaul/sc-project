@@ -1,12 +1,12 @@
-
+# main board class
 
 class Board:
-    def __init__(self, size):
+    def __init__(self, size): # board class constructor
         import main
         self.board = size * [main.EMPTY]
         self.ships = 0
 
-    def fire(self, location):
+    def fire(self, location): # function if board is being fired
         import main
         "Takes number input and modifies board"
         if self.board[location] == main.SHIP:
@@ -19,12 +19,12 @@ class Board:
             self.board[location] = main.MISS
             return False
 
-    def add_ship(self, location):
+    def add_ship(self, location): # add ship to board
         import main
         for pos in location:
             self.board[pos] = main.SHIP
 
-    def render(self):
+    def render(self): # render board
         import main
         output = "  | "
         output += " | ".join(i for i in main.TOP)
@@ -35,7 +35,7 @@ class Board:
         output += "\n" + (41 * "-")
         return output
 
-    def legal_ship(self, location):
+    def legal_ship(self, location): # check ship positioning
         "Checks [0, 1] coordinates for map and ship intersection"
         import main
 

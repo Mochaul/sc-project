@@ -1,10 +1,12 @@
+# Import needed files
 from board import *
 from player import *
 from ai import *
 
+# Main method
 def main():
-    #app = gui.GUI()
-    #app.mainloop()
+
+    # Variabel-variabel yang digunakan
     global SHIP, HIT, MISS, EMPTY
     global TOP, SIDE
     global ships
@@ -17,8 +19,8 @@ def main():
     TOP = "ABCDEFGHIJ"
     SIDE = "0123456789"
 
-    #ships = [["Carriers", 5, 1]] #Use while testing
-    ships = [["Martadinata", 5, 1], ["Fatahillah", 4, 2], ["", 3, 2], ["Boa", 2, 1]]
+    # Nama perahu pemain berupa kapal perang NKRI
+    ships = [["Martadinata", 5, 1], ["Fatahillah", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 3, 1]]
 
     functions()
 
@@ -50,7 +52,7 @@ def main():
         else:
             difficultyChoice = 1000
 
-
+        # Create player and enemy board and ships
         user = Player(comp_board)
         comp = AI(difficultyChoice, user_board)
 
@@ -70,6 +72,7 @@ def main():
             winner = ["Nelayan Nakal", comp_board.ships]
         print("\nPermainan selesai.\n%s menang dengan %s bagian kapal tersisa" % (winner[0], winner[1]))
 
+    # function for testing ai
     def ai_test():
         user_board = Board(100)
         user_board.ships = 101
@@ -82,6 +85,7 @@ def main():
 
     fullgame()
 
+#function needed for converting, etc.
 def functions():
     global gridconvert, inv_gridconvert, gen_poslist, onboard, \
            check_diagonal, grid_picktile, getdirs, getdirs_ext
@@ -157,4 +161,5 @@ def functions():
                 output += [sum(comb)]
         return output
 
+# calling the main method
 main()
