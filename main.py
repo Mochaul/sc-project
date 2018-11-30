@@ -675,18 +675,18 @@ class GameStart(tk.Frame):
         self.text_tembak = tk.StringVar(self)
         button1 = tk.Button(left, text="Tenggelamkan!", command=self.on_button)
         self.entry_8 = tk.Entry(left, textvariable = self.text_tembak)
-        label15 = tk.Label(left, text= "tekan tombol refresh")
+        self.label15 = tk.Label(left, text= "tekan tombol refresh")
         label3 = tk.Label(right, text="Nelayan Ilegal")
-        label14 = tk.Label(right, text="tekan tombol refresh")
+        self.label14 = tk.Label(right, text="tekan tombol refresh")
         button3 = tk.Button(self,text="refresh",comand=self.refresh()).pack()
         left.pack(side="left", expand=True, fill="both")
         right.pack(side="right", expand=True, fill="both")
         label2.pack()
         self.entry_8.pack()
         button1.pack()
-        label15.pack()
+        self.label15.pack()
         label3.pack()
-        label14.pack()
+        self.label14.pack()
 
     def setupAI(self, board):
         from random import choice, randint
