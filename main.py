@@ -12,6 +12,80 @@ arr_ship_player =100 * [" "]
 arr_ship_enemy = 100 * [" "]
 diff = ""
 
+global grid_convert, inv_gridconvert, gen_pos_list, onboard, \
+    check_diagonal, grid_pick_tile, get_dirs, getdirs_ext
+
+def grid_convert(self, location):
+        "Turns A0 coordinates into grid numbers"
+        location = TOP.find(location[0]) + (SIDE.find(location[1]) * 10)
+        return location
+
+def inv_gridconvert(self, location):
+    "Turns grid numbers into A0 coordinates"
+    location = TOP[location % 10] + SIDE[int(location / 10)]
+    return location
+
+def gen_pos_list(self, location, length):
+    "Turns [1, 2] coordinates and length into list of grid numbers"
+    direction = location[1] - location[0]
+    if abs(direction) >= 10:
+        if direction < 0:
+            direction = -10
+        else:
+            direction = 10
+    else:
+        if direction < 0:
+            direction = -1
+        else:
+            direction = 1
+    location = [location[0], location[0] + direction]
+
+    pos_list = []
+    for pos in range(location[0], location[0] + (length * direction), direction):
+        pos_list += [pos]
+        
+    return pos_list
+
+def onboard(self, coords):
+    "Checks if A0 coordinates are on the board"
+    if coords[0] in TOP and coords[1] in SIDE:
+        return True
+    else:
+        return False
+
+def check_diagonal(self, location):
+    "Returns True if [0, 1] coordinates are diagonal"
+    if location[0] % 10 == location[1] % 10 or \
+    int(location[0] / 10) == int(location[1] / 10):
+        return False
+    else:
+        return True
+
+def grid_pick_tile(self):
+    "Chooses a tile from grid"
+    from random import randrange
+    target = randrange(0, 91, 10)
+    target += randrange((target // 10) % 2, 10, 2)
+    return target
+
+def get_dirs(self, pos):
+    "Returns avaliable directions from pos"
+    output = []
+    if pos % 10 != 9: output += [1]
+    if pos % 10 != 0: output += [-1]
+    if pos < 90: output += [10]
+    if pos > 9: output += [-10]
+    return output
+
+def getdirs_ext(self, pos):
+    "Returns extended available directions from pos"
+    from itertools import combinations
+    output = get_dirs(pos)
+    for comb in combinations(output, 2):
+        if sum(comb) != 0:
+            output += [sum(comb)]
+    return output
+
 class GUI(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -46,82 +120,7 @@ class GUI(tk.Tk):
         '''Show a frame for the given page name'''
         frame = self.frames[page_name]
         frame.tkraise()
- 
-    def functions(self):
-        global grid_convert, inv_gridconvert, gen_pos_list, onboard, \
-            check_diagonal, grid_pick_tile, get_dirs, getdirs_ext
         
-        def grid_convert(self, location):
-            "Turns A0 coordinates into grid numbers"
-            location = TOP.find(location[0]) + (SIDE.find(location[1]) * 10)
-            return location
-
-        def inv_gridconvert(self, location):
-            "Turns grid numbers into A0 coordinates"
-            location = TOP[location % 10] + SIDE[int(location / 10)]
-            return location
-
-        def gen_pos_list(self, location, length):
-            "Turns [1, 2] coordinates and length into list of grid numbers"
-            direction = location[1] - location[0]
-            if abs(direction) >= 10:
-                if direction < 0:
-                    direction = -10
-                else:
-                    direction = 10
-            else:
-                if direction < 0:
-                    direction = -1
-                else:
-                    direction = 1
-            location = [location[0], location[0] + direction]
-
-            pos_list = []
-            for pos in range(location[0], location[0] + (length * direction), direction):
-                pos_list += [pos]
-                
-            return pos_list
-
-        def onboard(self, coords):
-            "Checks if A0 coordinates are on the board"
-            if coords[0] in TOP and coords[1] in SIDE:
-                return True
-            else:
-                return False
-
-        def check_diagonal(self, location):
-            "Returns True if [0, 1] coordinates are diagonal"
-            if location[0] % 10 == location[1] % 10 or \
-            int(location[0] / 10) == int(location[1] / 10):
-                return False
-            else:
-                return True
-
-        def grid_pick_tile(self):
-            "Chooses a tile from grid"
-            from random import randrange
-            target = randrange(0, 91, 10)
-            target += randrange((target // 10) % 2, 10, 2)
-            return target
-
-        def get_dirs(self, pos):
-            "Returns avaliable directions from pos"
-            output = []
-            if pos % 10 != 9: output += [1]
-            if pos % 10 != 0: output += [-1]
-            if pos < 90: output += [10]
-            if pos > 9: output += [-10]
-            return output
-
-        def getdirs_ext(self, pos):
-            "Returns extended available directions from pos"
-            from itertools import combinations
-            output = get_dirs(pos)
-            for comb in combinations(output, 2):
-                if sum(comb) != 0:
-                    output += [sum(comb)]
-            return output
-
 class KapalSatu(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -556,7 +555,6 @@ class KapalLima(tk.Frame):
         return output
 
     def click_me(self):
-        print("tes")
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
@@ -664,8 +662,6 @@ class AI:
 class GameStart(tk.Frame):
 
     def __init__(self, parent, controller):
-        
-        print(arr_of_ships)
         tk.Frame.__init__(self, parent)
         self.controller = controller
         left = tk.Frame(self, borderwidth=2, relief="solid")
@@ -678,7 +674,8 @@ class GameStart(tk.Frame):
         self.label15 = tk.Label(left, text= "tekan tombol refresh")
         label3 = tk.Label(right, text="Nelayan Ilegal")
         self.label14 = tk.Label(right, text="tekan tombol refresh")
-        button3 = tk.Button(self,text="refresh",comand=self.refresh()).pack()
+        button3 = tk.Button(self,text="refresh",comand=self.refresh())
+        button3.pack()
         left.pack(side="left", expand=True, fill="both")
         right.pack(side="right", expand=True, fill="both")
         label2.pack()
@@ -747,15 +744,8 @@ class GameStart(tk.Frame):
         print(self.entry_8.get())
         self.entry_8.delete(0, 'end')
 
-
-
-# if __name__ == "__main__": 
-#     app = GUI() 
-#     app.mainloop()
-
 def main():
     app = GUI()
-    functions()
     app.mainloop()
 
     def fullgame():
@@ -800,3 +790,7 @@ def main():
     fullgame()
 
 main()
+
+# if __name__ == "__main__": 
+#     app = GUI() 
+#     app.mainloop()
