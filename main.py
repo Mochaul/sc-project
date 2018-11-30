@@ -7,7 +7,7 @@ SHIP = "S"
 HIT = "X"
 MISS = "O"
 EMPTY = " "
-arr_of_ships = []
+ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
 arr_ship_player =100 * [" "]
 arr_ship_enemy = 100 * [" "]
 diff = ""
@@ -708,6 +708,8 @@ class GameStart(tk.Frame):
                     board.ships += length
                     allocated = True
 
+        print()
+
     def render(self, arr):
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
@@ -753,19 +755,8 @@ class GameStart(tk.Frame):
 
 def main():
     app = GUI()
-    app.mainloop()
-
-    global SHIP, HIT, MISS, EMPTY
-    global TOP, SIDE
-    global ships
-    SHIP = "S"
-    HIT = "X"
-    MISS = "O"
-    EMPTY = " "
-
-    ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
-
     functions()
+    app.mainloop()
 
     def fullgame():
         global user_board, comp_board
@@ -807,63 +798,6 @@ def main():
             input()
 
     fullgame()
-
-################################
-
-################################
-
-class Board:
-    def __init__(self, size):
-        self.board = size * [EMPTY]
-        self.ships = 0
-
-    def fire(self, location):
-        "Takes number input and modifies board"
-        if self.board[location] == SHIP:
-            self.board[location] = HIT
-            self.ships -= 1
-            return True
-        elif self.board[location] in (MISS, HIT):
-            return False
-        else:
-            self.board[location] = MISS
-            return False
-
-    def add_ship(self, location):
-        for pos in location:
-            self.board[pos] = SHIP
-
-    def render(self):
-        output = "  | "
-        output += " | ".join(i for i in TOP)
-        for row in range(10):
-            output += "\n" + (41 * "-") + "\n" + SIDE[row] + " "
-            for col in range(10):
-                output += "| %s " % self.board[row * 10 + col]
-        output += "\n" + (41 * "-")
-        return output
-
-    def legal_ship(self, location):
-        "Checks [0, 1] coordinates for map and ship intersection"
-
-        direction = location[1] - location[0]
-
-        for pos in location:
-            if not (0 <= pos <= 99) or self.board[pos] == SHIP:
-                return False
-
-        if abs(direction) == 1 and int(location[0] / 10) != int(location[-1] / 10):
-            return False
-
-        return True
-
-    def arr_copy (self):
-        for x in range(100):
-            self.board[x] = arr_ship_player[x]
-
-    def arr_copy_enemy(self):
-        for x in range(100):
-            arr_ship_enemy[x] = self.board[x]
 
 class Player():
     def __init__(self, enemy):
