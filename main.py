@@ -8,6 +8,7 @@ HIT = "X"
 MISS = "O"
 EMPTY = " "
 ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
+ships_ai = [["Kapal Liar", 5], ["Kapal Liar", 4], ["Kapal Liar", 3], ["Kapal Liar", 3], ["Kapal Liar", 2]]
 arr_ship_player =100 * [" "]
 arr_ship_ai = 100 * [" "]
 arr_arr_ship_ai = []
@@ -16,17 +17,17 @@ diff = ""
 global grid_convert, inv_gridconvert, gen_pos_list, onboard, \
     check_diagonal, grid_pick_tile, get_dirs, getdirs_ext
 
-def grid_convert(self, location):
+def grid_convert(location):
         "Turns A0 coordinates into grid numbers"
         location = TOP.find(location[0]) + (SIDE.find(location[1]) * 10)
         return location
 
-def inv_gridconvert(self, location):
+def inv_gridconvert(location):
     "Turns grid numbers into A0 coordinates"
     location = TOP[location % 10] + SIDE[int(location / 10)]
     return location
 
-def gen_pos_list(self, location, length):
+def gen_pos_list(location, length):
     "Turns [1, 2] coordinates and length into list of grid numbers"
     direction = location[1] - location[0]
     if abs(direction) >= 10:
@@ -47,14 +48,14 @@ def gen_pos_list(self, location, length):
         
     return pos_list
 
-def onboard(self, coords):
+def onboard(coords):
     "Checks if A0 coordinates are on the board"
     if coords[0] in TOP and coords[1] in SIDE:
         return True
     else:
         return False
 
-def check_diagonal(self, location):
+def check_diagonal(location):
     "Returns True if [0, 1] coordinates are diagonal"
     if location[0] % 10 == location[1] % 10 or \
     int(location[0] / 10) == int(location[1] / 10):
@@ -62,14 +63,14 @@ def check_diagonal(self, location):
     else:
         return True
 
-def grid_pick_tile(self):
+def grid_pick_tile():
     "Chooses a tile from grid"
     from random import randrange
     target = randrange(0, 91, 10)
     target += randrange((target // 10) % 2, 10, 2)
     return target
 
-def get_dirs(self, pos):
+def get_dirs(pos):
     "Returns avaliable directions from pos"
     output = []
     if pos % 10 != 9: output += [1]
@@ -78,7 +79,7 @@ def get_dirs(self, pos):
     if pos > 9: output += [-10]
     return output
 
-def getdirs_ext(self, pos):
+def getdirs_ext(pos):
     "Returns extended available directions from pos"
     from itertools import combinations
     output = get_dirs(pos)
@@ -685,28 +686,27 @@ class GameStart(tk.Frame):
         self.label15.pack()
         label3.pack()
         self.label14.pack()
+        self.setupAI(arr_ship_ai)
 
-    def setupAI(self, board):
+    def setupAI(self, arr_ship_ai):
         from random import choice, randint
-        for ship in ships:
+        for ship in ships_ai:
             length, number = ship[1], ship[2]
             for i in range(number):
                 allocated = False
                 while not allocated:
                     location = [randint(0, 99), 0]
-                    direction = choice(getdirs(location[0]))
+                    direction = choice(get_dirs(location[0]))
                     location[1] = location[0] + direction
 
-                    location = gen_poslist(location, length)
+                    location = gen_pos_list(location, length)
 
-                    if not board.legal_ship(location):
-                        continue
 
-                    board.add_ship(location)
-                    board.ships += length
+
+                    arr_ship_ai.add_ship(location)
+                    arr_ship_ai.ships += length
                     allocated = True
-
-        print()
+        print(arr_ship_ai)
 
     def render(self, arr):
         output = "      |  "
