@@ -30,7 +30,7 @@ class GUI(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage, KapalSatu, KapalDua, KapalTiga,KapalEmpat, PageOne):
+        for F in (KapalSatu, KapalDua, KapalTiga, KapalEmpat, KapalLima, GameStart):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -40,7 +40,7 @@ class GUI(tk.Tk):
             # will be the one that is visible.
             frame.grid(row=0, column=0, sticky="nsew")
 
-        self.show_frame("StartPage")
+        self.show_frame("KapalSatu")
 
     def show_frame(self, page_name):
         '''Show a frame for the given page name'''
@@ -48,7 +48,7 @@ class GUI(tk.Tk):
         frame.tkraise()
 
 
-class StartPage(tk.Frame):
+class KapalSatu(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -69,7 +69,7 @@ class StartPage(tk.Frame):
         self.entry_1.place(x=240, y=130)
 
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalSatu"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalDua"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
 
@@ -131,7 +131,7 @@ class StartPage(tk.Frame):
         output += "\n" + (55 * "-")
         return output
 
-class KapalSatu(tk.Frame):
+class KapalDua(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -150,7 +150,7 @@ class KapalSatu(tk.Frame):
         self.entry_1.place(x=240, y=130)
 
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalDua"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalTiga"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
 
@@ -219,7 +219,7 @@ class KapalSatu(tk.Frame):
         output += "\n" + (55 * "-")
         return output
 
-class KapalDua(tk.Frame):
+class KapalTiga(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -238,7 +238,7 @@ class KapalDua(tk.Frame):
         self.entry_1.place(x=240, y=130)
 
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalTiga"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalEmpat"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
 
@@ -306,7 +306,7 @@ class KapalDua(tk.Frame):
         output += "\n" + (55 * "-")
         return output
 
-class KapalTiga(tk.Frame):
+class KapalEmpat(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -325,7 +325,7 @@ class KapalTiga(tk.Frame):
         self.entry_1.place(x=240, y=130)
 
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalEmpat"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("KapalLima"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
 
@@ -392,7 +392,7 @@ class KapalTiga(tk.Frame):
         output += "\n" + (55 * "-")
         return output
 
-class KapalEmpat(tk.Frame):
+class KapalLima(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -413,7 +413,7 @@ class KapalEmpat(tk.Frame):
         optionMenu = tk.OptionMenu(self, self.var, "easy","medium","hard")
         optionMenu.place(x=240,y=180)
         self.button = tk.Button(self, text="check", command=self.on_button)
-        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
+        self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("GameStart"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
         self.button3 = tk.Button(self, text="print", command= self.click_me())
@@ -494,9 +494,10 @@ class KapalEmpat(tk.Frame):
         self.label_6.configure(text = output)
 
 
-class PageOne(tk.Frame):
+class GameStart(tk.Frame):
 
     def __init__(self, parent, controller):
+        
         print(arr_of_ships)
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -519,6 +520,26 @@ class PageOne(tk.Frame):
         label15.pack()
         label3.pack()
         label14.pack()
+
+    def setup(self, board):
+        from random import choice, randint
+        for ship in ships:
+            length, number = ship[1], ship[2]
+            for i in range(number):
+                allocated = False
+                while not allocated:
+                    location = [randint(0, 99), 0]
+                    direction = choice(getdirs(location[0]))
+                    location[1] = location[0] + direction
+
+                    location = gen_poslist(location, length)
+
+                    if not board.legal_ship(location):
+                        continue
+
+                    board.add_ship(location)
+                    board.ships += length
+                    allocated = True
 
     def render(self):
         output = "      |  "
@@ -809,27 +830,6 @@ class AI:
         self.mode = "HUNT"
         self.enemy = enemy
         self.modelist = {"HUNT": self.hunt, "ACQUIRE": self.acquire, "DESTROY": self.destroy}
-
-    def setup(self, board):
-        from random import choice, randint
-        for ship in ships:
-            length, number = ship[1], ship[2]
-            for i in range(number):
-                allocated = False
-                while not allocated:
-                    location = [randint(0, 99), 0]
-                    direction = choice(get_dirs(location[0]))
-                    location[1] = location[0] + direction
-
-                    location = gen_pos_list(location, length)
-
-                    if not board.legal_ship(location):
-                        continue
-
-                    board.add_ship(location)
-                    board.ships += length
-                    allocated = True
-        board.arr_copy_enemy()
 
     def turn(self, end = True):
         result = self.modelist[self.mode]()
