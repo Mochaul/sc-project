@@ -721,7 +721,7 @@ class GameStart(tk.Frame):
 
     def refresh(self):
         self.label15.configure(text =self.render(arr_ship_player))
-        self.label14.configure(text= self.render(board_enemy))
+        self.label14.configure(text= self.render(arr_ship_enemy))
 		
     def on_button(self):
         pos = self.entry_8.get()
