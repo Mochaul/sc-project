@@ -10,6 +10,7 @@ EMPTY = " "
 arr_of_ships = []
 arr_ship_player =100 * [" "]
 arr_ship_enemy = 100 * [" "]
+diff = ""
 
 class GUI(tk.Tk):
 
@@ -408,7 +409,9 @@ class KapalEmpat(tk.Frame):
         self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
-
+        self.var  = tk.StringVar(self)
+        optionMenu = tk.OptionMenu(self, self.var, "easy","medium","hard")
+        optionMenu.place(x=240,y=180)
         self.button = tk.Button(self, text="check", command=self.on_button)
         self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
         self.button.place(x=130, y = 380)
@@ -419,7 +422,7 @@ class KapalEmpat(tk.Frame):
     def on_button(self):
         pos_1 = self.entry_1.get()
         self.entry_1.delete(0, 'end')
-
+        diff = self.var.get()
         if (pos_1[0] in TOP and pos_1[1] in SIDE and pos_1[-1] in SIDE and pos_1[-2] in TOP ):
             #arr_of_ships.append(["Kapal Andau", 2, 1, pos_1])
             location = TOP.find(pos_1[0]) + (SIDE.find(pos_1[1]) * 10)
