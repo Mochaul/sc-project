@@ -108,6 +108,16 @@ class StartPage(tk.Frame):
             else :
                 print ("harus 5 kotak terisi")
 
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
+
     def render(self):
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
@@ -185,6 +195,15 @@ class KapalSatu(tk.Frame):
                     return True
             else :
                 print("harus 4 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
 
     def render(self):
@@ -265,6 +284,15 @@ class KapalDua(tk.Frame):
                     print(arr_ship_player)
         else :
             print("harus 3 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
     def render(self):
         output = "      |  "
@@ -342,6 +370,15 @@ class KapalTiga(tk.Frame):
                     print(arr_ship_player)
         else:
             print("harus 3 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
     def render(self):
         output = "      |  "
@@ -375,6 +412,8 @@ class KapalEmpat(tk.Frame):
         self.button_2 = tk.Button(self, text="next", command= lambda : controller.show_frame("PageOne"))
         self.button.place(x=130, y = 380)
         self.button_2.place(x= 240, y = 380)
+        self.button3 = tk.Button(self, text="print", command= self.click_me())
+        self.button3.pack()
 
     def on_button(self):
         pos_1 = self.entry_1.get()
@@ -418,6 +457,15 @@ class KapalEmpat(tk.Frame):
                     print(arr_ship_player)
         else :
             print("harus 2 kotak terisi")
+        output = "      |  "
+        output += "  |   ".join(i for i in TOP)
+        for row in range(10):
+            output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
+            for col in range(10):
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
+        output += "\n" + (55 * "-")
+        self.label_6.configure(text=output)
 
     def render(self):
         output = "      |  "
@@ -430,13 +478,14 @@ class KapalEmpat(tk.Frame):
         return output
 
     def click_me(self):
+        print("tes")
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
             output += "\n" + (55 * "-") + "\n" + SIDE[row] + " "
             for col in range(10):
-                x = row*10+col
-                output += "    | %s " % arr_of_ships[x]
+                x = row * 10 + col
+                output += "    | %s " % arr_ship_player[x]
         output += "\n" + (55 * "-")
         self.label_6.configure(text = output)
 
