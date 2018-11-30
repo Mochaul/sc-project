@@ -61,8 +61,8 @@ class StartPage(tk.Frame):
         self.board = 100 * [" "]
         label_1 = tk.Label(self, text="Kapal Martadinata (5)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
@@ -230,8 +230,8 @@ class KapalDua(tk.Frame):
         self.board = 100 * [" "]
         label_1 = tk.Label(self, text="Kapal Cakra (3)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
@@ -317,8 +317,8 @@ class KapalTiga(tk.Frame):
         self.board = 100 * [" "]
         label_1 = tk.Label(self, text="Kapal Boa (3)", width=20, font=("bold", 10))
         label_1.place(x=80, y=130)
-        label_6 = tk.Label(self, text=self.render())
-        label_6.place(x=80, y=430)
+        self.label_6 = tk.Label(self, text=self.render())
+        self.label_6.place(x=80, y=430)
         self.entry_1 = tk.Entry(self)
         self.entry_1.place(x=240, y=130)
 
@@ -576,6 +576,8 @@ def main():
         user.setup(user_board)
         comp.setup(comp_board)
 
+        print (user_board.render())
+
         while (user_board.ships and comp_board.ships) > 0:
             user.turn()
             if comp_board.ships > 0:
@@ -725,42 +727,47 @@ class Board:
 
         return True
 
+    def arr_copy (self):
+        for x in range(100):
+            self.board[x] = arr_of_ships[x]
+
 class Player():
     def __init__(self, enemy):
         self.enemy = enemy
     
     def setup(self, board):
-        print(user_board.render())
-        print("Enter ship coordinates as \"A0 to A3\"")
-        for ship in ships:
-            name, length, number = ship[0], ship[1], ship[2]
-            print("You have %s %s-long %s" % (number, length, name))
-            for i in range(number):
-                allocated = False
-                while not allocated:
-                    location = input("Enter coords: ").upper().split(" ")
-                    try: location = [location[0], location[-1]]
-                    except:
-                        print("Invalid coordinates")
-                        continue
-                    
-                    if not (onboard(location[0]) and onboard(location[1])):
-                        print("Coordinates not on board")
-                        continue
-                    
-                    location = [grid_convert(location[0]), grid_convert(location[1])]
-                    if check_diagonal(location):
-                        print("Diagonal ships are not allowed")
-                        continue
-                    
-                    location = gen_poslist(location, length)
-                    if not board.legal_ship(location):
-                        print("Ship intersects map or other ships")
-                        continue
-
-                    board.add_ship(location)
-                    board.ships += length
-                    allocated = True
+        board.arr_copy()
+        # print(user_board.render())
+        # print("Enter ship coordinates as \"A0 to A3\"")
+        # for ship in ships:
+        #     name, length, number = ship[0], ship[1], ship[2]
+        #     print("You have %s %s-long %s" % (number, length, name))
+        #     for i in range(number):
+        #         allocated = False
+        #         while not allocated:
+        #             location = input("Enter coords: ").upper().split(" ")
+        #             try: location = [location[0], location[-1]]
+        #             except:
+        #                 print("Invalid coordinates")
+        #                 continue
+        #
+        #             if not (onboard(location[0]) and onboard(location[1])):
+        #                 print("Coordinates not on board")
+        #                 continue
+        #
+        #             location = [grid_convert(location[0]), grid_convert(location[1])]
+        #             if check_diagonal(location):
+        #                 print("Diagonal ships are not allowed")
+        #                 continue
+        #
+        #             location = gen_poslist(location, length)
+        #             if not board.legal_ship(location):
+        #                 print("Ship intersects map or other ships")
+        #                 continue
+        #
+        #             board.add_ship(location)
+        #             board.ships += length
+        #             allocated = True
 
     def turn(self): #Fix redundant firing
         print("Here is the enemy's board:")
