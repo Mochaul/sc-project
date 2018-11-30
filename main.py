@@ -7,7 +7,7 @@ SHIP = "S"
 HIT = "X"
 MISS = "O"
 EMPTY = " "
-ships = [["Martadinata", 5, 1], ["Fatahilla", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
+ships = [["Martadinata", 5, 1], ["Fatahillah", 4, 1], ["Cakra", 3, 1], ["Boa", 3, 1], ["Andau", 2, 1]]
 ships_ai = [["Kapal Liar", 5], ["Kapal Liar", 4], ["Kapal Liar", 3], ["Kapal Liar", 3], ["Kapal Liar", 2]]
 arr_ship_player =100 * [" "]
 arr_ship_ai = 100 * [" "]
@@ -598,7 +598,7 @@ class AI:
                 if arr_ship_player[target + direction] not in (MISS, HIT):
                     self.acq_list += [direction]
 
-        return self.enemy.fire(target), target
+        #return self.enemy.fire(target), target
 
     def acquire(self):
         target = self.acq_list[0] + self.acq_list[1]
