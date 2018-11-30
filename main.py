@@ -729,7 +729,7 @@ class Board:
 
     def arr_copy (self):
         for x in range(100):
-            self.board[x] = arr_of_ships[x]
+            self.board[x] = arr_ship_player[x]
 
 class Player():
     def __init__(self, enemy):
