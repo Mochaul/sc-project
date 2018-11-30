@@ -708,19 +708,24 @@ class GameStart(tk.Frame):
                     board.ships += length
                     allocated = True
 
-    def render(self):
+    def render(self,arr):
         output = "      |  "
         output += "  |   ".join(i for i in TOP)
         for row in range(10):
             output += "\n" + (55* "-") + "\n" + SIDE[row] + " "
             for col in range(10):
-                output += "    | %s " % self.board[row * 10 + col]
+                x = row * 10 + col
+                output += "    | %s " % arr[x]
         output += "\n" + (55 * "-")
         return output
 
-
+    def refresh(self):
+        self.label15.configure(text =self.render(arr_ship_player))
+        self.label14.configure(text= self.render(board_enemy))
+		
     def on_button(self):
         pos = self.entry_8.get()
+
         if (len(pos)!=2):
             print ("input tidak valid masukan input yang valid")
         else :
@@ -730,9 +735,16 @@ class GameStart(tk.Frame):
                 if (pos[1] not in SIDE):
                     print("input tidak valid masukan input yang valid")
                 else :
-                    return pos
+                    location = TOP.find(pos[0]) + (SIDE.find(pos[1]) * 10)
+                    if (arr_ship_enemy[location]=='S'):
+                        board_enemy[location] = HIT
+                        HP_Enemy=-1
+                    elif(arr_ship_enemy[location]==' '):
+                        board_enemy[location] = MISS
+        self.label14.configure(text= self.render(board_enemy))
         print(self.entry_8.get())
         self.entry_8.delete(0, 'end')
+
 
 
 # if __name__ == "__main__": 
